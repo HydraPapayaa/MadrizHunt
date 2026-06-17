@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa MadrizHunt</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha512-sA+Kd9ti0X8dUUqV3jV0lL1tE3D9kFtv0kLzaF5r5U9lgKZc9XwHkW6Z2kN3B4ZPIhbRJBWzl9F8tOaS+17ipg==" crossorigin="" />
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+  <div class="map-page">
+    <div class="content-layer">
+      <header class="map-header">
+        <div class="map-brand">
+          <a href="/" class="map-back btn-secondary">← Volver</a>
+          <div class="map-brand-copy">
+            <h1>Mapa MadrizHunt</h1>
+            <p>Explora spots de Madrid y consulta ubicaciones con enlace directo a Google Maps.</p>
+          </div>
+        </div>
+        <div class="map-actions">
+          <button id="open-user-panel" class="btn-icon" aria-label="Cuenta de usuario">👤</button>
+          <button id="open-add-point" class="btn btn-primary hidden">Añadir punto</button>
+        </div>
+      </header>
+
+      <section class="map-main">
+        <div class="map-viz">
+          <div id="map" class="leaflet-map"></div>
+        </div>
+
+        <aside class="map-sidebar">
+          <div class="map-panel">
+            <h2>Puntos de interés</h2>
+            <div id="point-list" class="point-list">
+              <p class="empty-state">Cargando puntos...</p>
+            </div>
+          </div>
+          <div class="map-panel map-panel-small">
+            <h3>Información</h3>
+            <p>HydraPapaya, Owner y Staff pueden crear nuevos puntos con nombre, foto, descripción, ubicación y enlace directo a Google Maps.</p>
+            <p>Los puntos se muestran en el mapa y en el listado. Haz clic en un punto para ver más detalles.</p>
+          </div>
+        </aside>
+      </section>
+    </div>
+
+    <div class="modal-overlay hidden" id="user-modal">
+      <div class="point-modal user-modal" role="dialog" aria-modal="true">
+        <button class="modal-close" id="close-user-modal" aria-label="Cerrar">×</button>
+        <h2>Mi cuenta</h2>
+        <div class="account-summary">
+          <p class="account-label">Usuario:</p>
+          <strong id="user-name">-</strong>
+          <p class="account-label">Correo:</p>
+          <span id="user-email">-</span>
+          <p class="account-label">Rol:</p>
+          <span id="user-role-text">-</span>
+        </div>
+        <button id="logout-button" class="btn btn-secondary">Cerrar sesión</button>
+        <hr class="modal-divider" />
+        <h3>Cambiar contraseña</h3>
+        <form id="change-password-form">
+          <div class="form-group">
+            <label for="current-password">Contraseña actual</label>
+            <input id="current-password" type="password" required autocomplete="current-password" />
+          </div>
+          <div class="form-group">
+            <label for="new-password">Nueva contraseña</label>
+            <input id="new-password" type="password" required minlength="6" autocomplete="new-password" />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirmar contraseña</label>
+            <input id="confirm-password" type="password" required minlength="6" autocomplete="new-password" />
+          </div>
+          <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
+          <p id="password-form-status" class="auth-status"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="point-modal">
+      <div class="point-modal" role="dialog" aria-modal="true">
+        <button class="modal-close" id="close-point-modal" aria-label="Cerrar">×</button>
+        <h2>Crear nuevo punto</h2>
+        <p>Completa los datos para añadir un spot al mapa.</p>
+        <form id="add-point-form">
+          <div class="form-group">
+            <label for="point-title">Nombre del punto</label>
+            <input id="point-title" type="text" required />
+          </div>
+          <div class="form-group">
+            <label for="point-location">Ubicación / barrio</label>
+            <input id="point-location" type="text" required />
+          </div>
+          <div class="form-group">
+            <label for="point-description">Descripción</label>
+            <textarea id="point-description" rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="point-photo">URL de la foto</label>
+            <input id="point-photo" type="url" placeholder="https://example.com/foto.jpg" />
+          </div>
+          <div class="form-group split">
+            <div>
+              <label for="point-lat">Latitud</label>
+              <input id="point-lat" type="number" step="0.000001" required />
+            </div>
+            <div>
+              <label for="point-lng">Longitud</label>
+              <input id="point-lng" type="number" step="0.000001" required />
+            </div>
+          </div>
+          <p class="auth-note">Puedes usar Google Maps para obtener las coordenadas exactas.</p>
+          <button type="submit" class="btn btn-primary">Guardar punto</button>
+          <p id="point-form-status" class="auth-status"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha512-oB5gM5n0V3qvMRtH5QGkU3i9g5ZUeOJgZTPIUMW/uw6srYOsPSd2b0gG1p8PJTw0vW4Y2nZR1h8MvVsZ1D3M2Q==" crossorigin=""></script>
+  <script src="map.js" defer></script>
+</body>
+</html>

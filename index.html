@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Madriz Hunt</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+  <div class="content-layer">
+    <div class="hero">
+      <div class="scene">
+        <img src="https://i.imgur.com/I9x1joz.png" alt="Madriz Hunt Logo" class="logo-image" />
+      </div>
+      <div class="hero-copy">
+        <span class="eyebrow">Bienvenido, de madrid al cielo (o al spot 😉)</span>
+        <strong><h1>Madriz Hunt</h1></strong>
+        <p>Bienvenido al primer mapa de spots y urbex gratis de madrid</p>
+        <div class="hero-buttons">
+          <button id="open-auth" class="btn btn-primary">Iniciar Sesión</button>
+          <a href="#about" class="secondary">Saber más</a>
+        </div>
+        <div class="hero-status" id="hero-status">Inicia sesión para ver el panel y gestionar permisos.</div>
+      </div>
+    </div>
+    <section id="about" class="section about">
+      <h2>Objetivo del proyecto</h2>
+      <p>Hola, me presento soy Hydra el creador de este proyecto mi objetivo es simple, Madrid libre para todos, en esta comunidad podeis incluir spots y un administrador los revisara en menos de 24H, si contribuis apoyais este proyecto ganareis HunterPoints (HP) por lo tanto se os añadira a una LeaderBoard de donantes y se os añadira un rango especial segun la cantidad de spots que doneis, este proyecto es gratis para todos y totalmente libre, disfrutad y si quereis saber un poco mas de nuestra historia ir al apartado de saber mas :3</p>
+    </section>
+  </div>
+
+  <div class="modal-overlay hidden" id="auth-modal" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button class="modal-close" id="close-auth" aria-label="Cerrar">×</button>
+      <div class="auth-header">
+        <h2 id="auth-title" class="auth-title">Acceso a Madriz Hunt</h2>
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" data-tab="login" type="button">Iniciar sesión</button>
+          <button class="auth-tab" data-tab="register" type="button">Registro</button>
+        </div>
+        <p class="auth-subtitle">Accede a tu cuenta o crea una nueva.</p>
+      </div>
+      <div class="auth-body">
+        <div class="auth-section auth-login active" id="login-section">
+          <form id="login-form">
+            <div class="form-group">
+              <label for="login-email">Correo electrónico</label>
+              <input id="login-email" type="email" required autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="login-password">Contraseña</label>
+              <input id="login-password" type="password" required autocomplete="current-password" />
+            </div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+          </form>
+          <p class="auth-note">¿Aún no tienes cuenta? Usa la pestaña Registro para crear una.</p>
+        </div>
+        <div class="auth-section auth-register" id="register-section">
+          <form id="register-form">
+            <div class="form-group">
+              <label for="register-name">Nombre de usuario</label>
+              <input id="register-name" type="text" required autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="register-email">Correo electrónico</label>
+              <input id="register-email" type="email" required autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="register-password">Contraseña</label>
+              <input id="register-password" type="password" required minlength="6" autocomplete="new-password" />
+            </div>
+            <p class="auth-note">Bienvenidos nuevos usuarios!</p>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+          </form>
+        </div>
+        <div class="auth-dashboard hidden" id="dashboard-section">
+          <div class="dashboard-welcome">
+            <div>
+              <p class="dashboard-text">Has iniciado sesión como <strong id="dashboard-user"></strong>.</p>
+              <p class="dashboard-status" id="dashboard-role"></p>
+            </div>
+            <button id="logout-button" class="btn btn-secondary">Cerrar sesión</button>
+          </div>
+          <p class="auth-note">Bienvenido al panel usuario!!</p>
+          <div class="dashboard-message" id="dashboard-message"></div>
+          <div class="admin-panel hidden" id="admin-panel">
+            <h3>Panel de usuarios</h3>
+            <p>Lista de usuarios registrados y controles de permisos.</p>
+            <div class="user-table-wrap">
+              <table class="user-table">
+                <thead>
+                  <tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Acciones</th></tr>
+                </thead>
+                <tbody id="user-list"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="owner-panel hidden" id="owner-panel">
+            <h3>Crear usuario</h3>
+            <p class="auth-note" id="owner-panel-description">HydraPapaya puede crear usuarios de cualquier rango y también eliminar usuarios. Staff puede crear usuarios corrientes y staff, si necesitas ayuda abre ticket en discord.
+            </p>
+            <form id="owner-create-form">
+              <div class="form-group">
+                <label for="owner-name">Nombre</label>
+                <input id="owner-name" type="text" required autocomplete="name" />
+              </div>
+              <div class="form-group">
+                <label for="owner-email">Correo electrónico</label>
+                <input id="owner-email" type="email" required autocomplete="email" />
+              </div>
+              <div class="form-group">
+                <label for="owner-password">Contraseña</label>
+                <input id="owner-password" type="password" required minlength="6" autocomplete="new-password" />
+              </div>
+              <div class="form-group">
+                <label for="owner-role">Rol</label>
+                <select id="owner-role">
+                  <option value="user">Usuario corriente</option>
+                  <option value="staff">Staff</option>
+                  <option value="owner">Owner</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Crear usuario</button>
+            </form>
+            <p id="owner-create-message" class="auth-note"></p>
+          </div>
+        </div>
+      </div>
+      <div class="auth-footer">
+        <p id="auth-status" class="auth-status"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const particles = [];
+    let particleCount = Math.floor(width / 15);
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = random(0, width);
+        this.y = random(0, height);
+        this.vx = random(-0.3, 0.6);
+        this.vy = random(-0.2, 0.4);
+        this.size = random(1, 3);
+        this.alpha = random(0.2, 0.85);
+        this.phase = random(0, Math.PI * 2);
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.phase += 0.02;
+        this.alpha = 0.4 + Math.sin(this.phase) * 0.2;
+
+        if (this.x < -50 || this.x > width + 50 || this.y < -50 || this.y > height + 50) {
+          this.reset();
+          this.x = random(0, width);
+          this.y = random(0, height);
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles.length = 0;
+      particleCount = Math.floor(width / 15);
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'rgba(1, 4, 20, 0.65)';
+      ctx.fillRect(0, 0, width, height);
+
+      for (const particle of particles) {
+        particle.update();
+        particle.draw();
+      }
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.strokeStyle = `rgba(120, 190, 255, ${(120 - dist) / 280})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      initParticles();
+    }
+
+    window.addEventListener('resize', resize);
+    initParticles();
+    draw();
+  </script>
+  <script src="auth.js" defer></script>
+</body>
+</html>
